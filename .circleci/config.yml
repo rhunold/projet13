@@ -53,5 +53,6 @@ workflows:
     jobs:
       - linting_testing
       - docker_hub
-        requires:
-          - linting_testing # only push to docker is tests are ok         
+      - deploy:      
+          requires:
+            - linting_testing # only push to docker is tests are ok         
