@@ -37,7 +37,7 @@ jobs:
       - run: 
           name: push docker image to dockerhub
           command: |
-            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+            echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_USERNAME --password-stdin
             docker build . -t $DOCKERHUB_USERNAME/amd64_image_oc_letting:$CIRCLE_SHA1
             docker tag $DOCKERHUB_USERNAME/amd64_image_oc_letting:$CIRCLE_SHA1 $DOCKERHUB_USERNAME/amd64_image_oc_letting:latest
             docker push $DOCKERHUB_USERNAME/amd64_image_oc_letting:latest
