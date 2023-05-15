@@ -9,7 +9,10 @@ jobs:
     docker:
       - image: python:3.8.16-alpine3.18
     steps:
-      - checkout     
+      - checkout
+      - run:
+          name: install dependencies
+          command: pip install -r requirements.txt      
       - run:
           name: Run linting
           command: flake8
