@@ -9,7 +9,7 @@ version: 2.1
 jobs:
   linting_testing:
     docker:
-      - image: python:3.8.16-slim-bullseye
+      - image: rhunold/amd64_image_oc_letting:latest
     steps:
       - checkout
       - run:
@@ -24,7 +24,7 @@ jobs:
 
   docker_hub:
     docker:
-      - image: rhunold/image_oc_letting:latest
+      - image: rhunold/amd64_image_oc_letting:latest
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
