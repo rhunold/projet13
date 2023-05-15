@@ -51,13 +51,14 @@ jobs:
       - run: 
           name: push docker image to dockerhub
           command: |
-            COMMIT_HASH=$(git rev-parse HEAD)
+            TAG=$CIRCLE_SHA1
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-            docker build . -t $DOCKERHUB_USERNAME/amd64_image_oc_letting:$COMMIT_HASH
-            docker tag $DOCKERHUB_USERNAME/amd64_image_oc_letting:$COMMIT_HASH $DOCKERHUB_USERNAME/amd64_image_oc_letting:latest
-            docker push $DOCKERHUB_USERNAME/amd64_image_oc_letting:$COMMIT_HASH
+            docker build . -t $DOCKERHUB_USERNAME/amd64_image_oc_letting:$TAG
+            docker tag $DOCKERHUB_USERNAME/amd64_image_oc_letting:$TAG $DOCKERHUB_USERNAME/amd64_image_oc_letting:latest
             docker push $DOCKERHUB_USERNAME/amd64_image_oc_letting:latest
+            docker push $DOCKERHUB_USERNAME/amd64_image_oc_letting:$TAG            
 
+          # TAG=$(git rev-parse HEAD)
 
 workflows:
   deployment_process:
@@ -66,5 +67,7 @@ workflows:
       - docker_hub:      
           requires:
             - linting_testing
-          branches:
-            only: master        
+          filters:
+            branches:
+              only:
+                - master    
