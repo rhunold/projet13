@@ -1,8 +1,8 @@
 version: 2.1
 
-orbs:
-  python: circleci/python@2.0.3
-  heroku: circleci/heroku@1.2.6
+# orbs:
+#   python: circleci/python@2.0.3
+#   heroku: circleci/heroku@1.2.6
 
 jobs:
   linting_testing:
@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: install dependencies
+          name: Install dependencies
           command: pip install -r requirements.txt      
       - run:
           name: Run linting
@@ -20,6 +20,31 @@ jobs:
           name: Run tests
           command: pytest 
 
+  docker_hub:
+    docker:
+      - image: rhunold/image_oc_letting:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      # - setup_remote_docker:
+      #     version: 20.10.18
+      #     docker_layer_caching: true
+
+      - run: 
+          name: get the id of the last commit
+          command: COMMIT_HASH=$(git rev-parse HEAD)    
+      - run: 
+          name: login with docker
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_USERNAME --password-stdin
+      - run: 
+          name: build docker image with Dockerfile and add CircleCI tag hash
+          command: docker build -t $DOCKERHUB_USERNAME/image_oc_letting:$COMMIT_HASH .
+      - run: 
+          name: push docker image to dockerhub
+          command: docker push $DOCKERHUB_USERNAME/image_oc_letting:$COMMIT_HASH
 
 
 
@@ -27,3 +52,6 @@ workflows:
   deployment_process:
     jobs:
       - linting_testing
+      - docker_hub
+        requires:
+          - linting_testing # only push to docker is tests are ok         
