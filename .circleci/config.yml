@@ -4,10 +4,12 @@ version: 2.1
 #   python: circleci/python@2.0.3
 #   heroku: circleci/heroku@1.2.6
 
+
+
 jobs:
   linting_testing:
     docker:
-      - image: python:3.8.16-alpine3.18
+      - image: python:3.8.16-slim-bullseye
     steps:
       - checkout
       - run:
@@ -22,7 +24,7 @@ jobs:
 
   docker_hub:
     docker:
-      - image: rhunold/image_oc_letting:latest
+      - image: $DOCKERHUB_USERNAME/image_oc_letting:latest
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -32,20 +34,29 @@ jobs:
       #     version: 20.10.18
       #     docker_layer_caching: true
 
-      - run: 
-          name: get the id of the last commit
-          command: COMMIT_HASH=$(git rev-parse HEAD)    
-      - run: 
-          name: login with docker
-          command: |
-            echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_USERNAME --password-stdin
-      - run: 
-          name: build docker image with Dockerfile and add CircleCI tag hash
-          command: docker build -t $DOCKERHUB_USERNAME/image_oc_letting:$COMMIT_HASH .
+      # - run: 
+      #     name: get the id of the last commit
+      #     command: COMMIT_HASH=$(git rev-parse HEAD)    
+      # - run: 
+      #     name: login with docker
+      #     command: |
+      #       echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_USERNAME --password-stdin
+      # - run: 
+      #     name: build docker image with Dockerfile and add CircleCI tag hash
+      #     command: docker build -t $DOCKERHUB_USERNAME/image_oc_letting:$COMMIT_HASH .
+      # - run: 
+      #     name: push docker image to dockerhub
+      #     command: docker push $DOCKERHUB_USERNAME/image_oc_letting:$COMMIT_HASH
+
       - run: 
           name: push docker image to dockerhub
-          command: docker push $DOCKERHUB_USERNAME/image_oc_letting:$COMMIT_HASH
-
+          command: |
+            COMMIT_HASH=$(git rev-parse HEAD)
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+            docker build . -t $DOCKERHUB_USERNAME/image_oc_letting:$COMMIT_HASH
+            docker tag $DOCKERHUB_USERNAME/image_oc_letting:$COMMIT_HASH $DOCKERHUB_USERNAME/image_oc_letting:latest
+            docker push $DOCKERHUB_USERNAME/image_oc_letting:$COMMIT_HASH
+            docker push $DOCKERHUB_USERNAME/image_oc_letting:latest
 
 
 workflows:
