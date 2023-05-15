@@ -25,28 +25,14 @@ jobs:
   docker_hub:
     docker:
       - image: rhunold/amd64_image_oc_letting:latest
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
+        # auth:
+        #   username: $DOCKERHUB_USERNAME
+        #   password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
-      # - setup_remote_docker:
-      #     version: 20.10.18
-      #     docker_layer_caching: true
-
-      # - run: 
-      #     name: get the id of the last commit
-      #     command: COMMIT_HASH=$(git rev-parse HEAD)    
-      # - run: 
-      #     name: login with docker
-      #     command: |
-      #       echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_USERNAME --password-stdin
-      # - run: 
-      #     name: build docker image with Dockerfile and add CircleCI tag hash
-      #     command: docker build -t $DOCKERHUB_USERNAME/image_oc_letting:$COMMIT_HASH .
-      # - run: 
-      #     name: push docker image to dockerhub
-      #     command: docker push $DOCKERHUB_USERNAME/image_oc_letting:$COMMIT_HASH
+      - setup_remote_docker:
+          version: 20.10.18
+          docker_layer_caching: true
 
       - run: 
           name: push docker image to dockerhub
@@ -58,7 +44,9 @@ jobs:
             docker push $DOCKERHUB_USERNAME/amd64_image_oc_letting:latest
             docker push $DOCKERHUB_USERNAME/amd64_image_oc_letting:$TAG            
 
+          # $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
           # TAG=$(git rev-parse HEAD)
+          # TAG=(git --git-dir=https://github.com/rhunold/projet13 rev-parse HEAD)
 
 workflows:
   deployment_process:
