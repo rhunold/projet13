@@ -9,7 +9,7 @@ version: 2.1
 jobs:
   linting_testing:
     docker:
-      - image: image_oc_letting:latest
+      - image: $DOCKERHUB_USERNAME/image_oc_letting:latest
     steps:
       - checkout
       - run:
