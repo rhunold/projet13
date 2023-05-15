@@ -9,7 +9,7 @@ version: 2.1
 jobs:
   linting_testing:
     docker:
-      - image: python:3.8.16-slim-bullseye
+      - image: image_oc_letting:latest
     steps:
       - checkout
       - run:
