@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  python: cimg/python:3.8
-  heroku: circleci/heroku@2.0.0
+  python: circleci/python@2.0.3
+  heroku: circleci/heroku@1.2.6
 
 jobs:
   linting_testing:
