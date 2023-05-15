@@ -1,0 +1,11 @@
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+.tox
+
+*DS_Store
+.git
+/specs
+/venv
