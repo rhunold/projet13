@@ -1,5 +1,26 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@2.1.1
+  python: cimg/python:3.8
   heroku: circleci/heroku@2.0.0
+
+jobs:
+  linting_testing:
+    docker:
+      - image: python:3.8.16-alpine3.18
+    steps:
+      - checkout     
+      - run:
+          name: Run linting
+          command: flake8
+      - run:
+          name: Run tests
+          command: pytest 
+
+
+
+
+workflows:
+  deployment_process:
+    jobs:
+      - linting_testing
