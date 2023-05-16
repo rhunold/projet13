@@ -9,7 +9,7 @@ version: 2.1
 jobs:
   linting_testing:
     docker:
-      - image: python:3.10.8-slim-bullseye
+      - image: cimg/python:3.8.16
     steps:
       - checkout
       - run:
@@ -26,7 +26,7 @@ jobs:
 
   docker_hub:
     docker:
-      - image: circleci/python:3.8.16-slim-bullseye
+      - image: cimg/python:3.8.16
     steps:
       - checkout    
       - setup_remote_docker:
