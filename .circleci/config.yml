@@ -34,7 +34,7 @@ jobs:
       #       pkg-manager: pip
       - run:
           name: Install Docker client
-          command: apk add docker-cli      
+          command: apt-get install docker-ce docker-ce-cli containerd.io  
       - setup_remote_docker:
           version: 20.10.11
           docker_layer_caching: true
