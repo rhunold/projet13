@@ -1,4 +1,7 @@
-FROM python:3.8.16-alpine3.18 AS base
+FROM cimg/python:3.8.16 AS base
+
+# python:3.8.16-alpine3.18
+# python:3.8.16-slim-bullseye
 
 
 ARG COMMIT_HASH
@@ -16,6 +19,8 @@ COPY . .
 
 
 RUN pytest
+
+
 
 # Exposition du port du container
 EXPOSE 8000
