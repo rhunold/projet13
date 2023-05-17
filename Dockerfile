@@ -1,11 +1,15 @@
 FROM cimg/python:3.8.16 AS base
 
+
 # python:3.8.16-alpine3.18
 # python:3.8.16-slim-bullseye
+# cimg/python:3.8.16
 
 
-ARG COMMIT_HASH
-LABEL com.example.commit-hash=${COMMIT_HASH}
+# ARG COMMIT_HASH
+# ENV COMMIT_HASH=$COMMIT_HASH
+
+# LABEL com.example.commit-hash=${COMMIT_HASH}
 
 
 ENV PYTHONDONTWRITEBYTECODE=1

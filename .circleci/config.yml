@@ -29,24 +29,30 @@ jobs:
     steps:
       - checkout    
       - setup_remote_docker:
-          version: 20.10.8
-      - run:
-          name: Install Docker CI
-          command: |
-            curl -fsSL https://get.docker.com -o get-docker.sh
-            sudo sh get-docker.sh
-            sudo usermod -aG docker $USER
-            docker --version
-      - run:
-          name: Install dependencies
-          command: pip install -r requirements.txt
+          version: 20.10.21
+          
+      # - run:
+      #     name: Install Docker CI
+      #     command: |
+      #       curl -fsSL https://get.docker.com -o get-docker.sh
+      #       sudo sh get-docker.sh
+      #       sudo usermod -aG docker $USER
+      #       docker --version
+      # - run:
+      #     name: Install dependencies
+      #     command: pip install -r requirements.txt
+
+
 
       - run: |
           TAG=$CIRCLE_SHA1
-          echo "$DOCKERHUB_PASSWORD" | docker login -u $"DOCKERHUB_USERNAM"E --password-stdin
+          echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
 
-          docker build -t rhunold/amd64_image_oc_letting:$CIRCLE_SHA1 .
-          docker push rhunold/amd64_image_oc_letting:$CIRCLE_SHA1                  
+          docker build --platform linux/amd64 -t rhunold/amd64_image_oc_letting:$TAG . 
+          docker tag rhunold/amd64_image_oc_letting:$TAG rhunold/amd64_image_oc_letting:latest          
+
+          docker push rhunold/amd64_image_oc_letting:$TAG
+          docker push rhunold/amd64_image_oc_letting:latest          
 
   # docker_hub:
   #   docker:
@@ -86,7 +92,7 @@ jobs:
   #       #   docker push $DOCKERHUB_USERNAME/amd64_image_oc_letting:latest
   #       #   docker push $DOCKERHUB_USERNAME/amd64_image_oc_letting:$CIRCLE_SHA1            
 
-  #       # docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
+  #       #   
   #       # echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_USERNAME --password-stdin            
 
   #       # $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
