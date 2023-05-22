@@ -1,6 +1,5 @@
 FROM cimg/python:3.8.16
 
-
 # python:3.8.16-alpine3.18
 # python:3.8.16-slim-bullseye
 # cimg/python:3.8.16
@@ -8,21 +7,23 @@ FROM cimg/python:3.8.16
 
 # ARG COMMIT_HASH
 # ENV COMMIT_HASH=$COMMIT_HASH
-
 # LABEL com.example.commit-hash=${COMMIT_HASH}
 
-ENV PIP_DISABLE_PIP_VERSION_CHECK 1
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+# ENV PIP_DISABLE_PIP_VERSION_CHECK 1
+# ENV PYTHONDONTWRITEBYTECODE=1
+# ENV PYTHONUNBUFFERED=1
+
 
 WORKDIR /app
 
-COPY . /app/
+COPY requirements.txt /app/
+
 # RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
+COPY . /app/
 
-RUN pytest
+# RUN pytest
 
 
 

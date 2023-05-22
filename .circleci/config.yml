@@ -24,23 +24,21 @@ jobs:
       - image: cimg/python:3.8.16
 
     steps:
-      - checkout            
-
-      - setup_remote_docker:
-          version: 20.10.7
+      - checkout
       - run:
           name: Install dependencies
           command: |
-            pip install -r requirements.txt
-
+            pip install -r requirements.txt      
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
       - run:
           name: Build and push Docker image
           command: |
-            docker build -t rhunold/amd64_image_oc_letting:$CIRCLE_SHA1 .
-            docker tag rhunold/amd64_image_oc_letting:$CIRCLE_SHA1 rhunold/amd64_image_oc_letting:latest               
+            TAG=CIRCLE_SHA1 
+            docker build -t rhunold/amd64_image_oc_letting:$TAG .
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-            docker push rhunold/amd64_image_oc_letting:latest
-            docker push rhunold/amd64_image_oc_letting:$CIRCLE_SHA1            
+            docker push rhunold/amd64_image_oc_letting:$TAG            
 
   # deploy_heroku:
   #   docker:
@@ -81,10 +79,10 @@ workflows:
 #       - build:
 #           filters:
 #             branches:
-#               only: main
+#               only: master
       # - deploy_heroku:
       #     requires:
       #       - build
       #     filters:
       #       branches:
-      #         only: main
+      #         only: master  
