@@ -35,7 +35,7 @@ jobs:
       - run:
           name: Build and push Docker image
           command: |
-            TAG=CIRCLE_SHA1 
+            TAG=$CIRCLE_SHA1 
             docker build -t rhunold/amd64_image_oc_letting:$TAG .
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
             docker push rhunold/amd64_image_oc_letting:$TAG            
