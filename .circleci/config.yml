@@ -28,6 +28,10 @@ jobs:
 
       - setup_remote_docker:
           version: 20.10.7
+      - run:
+          name: Install dependencies
+          command: |
+            pip install -r requirements.txt
 
       - run:
           name: Build and push Docker image
