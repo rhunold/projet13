@@ -19,7 +19,7 @@ jobs:
             pytest
             flake8
 
-  test:
+  docker:
     build:
       - image: cimg/python:3.8.16
 
@@ -62,7 +62,7 @@ workflows:
   deployment_process:
     jobs:
       - test
-      - build:      
+      - docker:      
           requires:
             - test
           filters:
