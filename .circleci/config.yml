@@ -33,7 +33,7 @@ jobs:
           name: Build and push Docker image
           command: |
             docker build -t rhunold/amd64_image_oc_letting:$CIRCLE_SHA1 .
-            docker tag rhunold/amd64_image_oc_letting:latest .               
+            docker tag rhunold/amd64_image_oc_letting:$CIRCLE_SHA1 rhunold/amd64_image_oc_letting:latest               
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
             docker push rhunold/amd64_image_oc_letting:latest
             docker push rhunold/amd64_image_oc_letting:$CIRCLE_SHA1            

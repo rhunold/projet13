@@ -1,4 +1,4 @@
-FROM cimg/python:3.8.16 AS base
+FROM cimg/python:3.8.16
 
 
 # python:3.8.16-alpine3.18
@@ -11,7 +11,7 @@ FROM cimg/python:3.8.16 AS base
 
 # LABEL com.example.commit-hash=${COMMIT_HASH}
 
-
+ENV PIP_DISABLE_PIP_VERSION_CHECK 1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
