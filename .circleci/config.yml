@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  test:
     docker:
       - image: cimg/python:3.8.16
 
@@ -17,6 +17,14 @@ jobs:
           name: Run tests
           command: |
             pytest
+            flake8
+
+  test:
+    build:
+      - image: cimg/python:3.8.16
+
+    steps:
+      - checkout            
 
       - setup_remote_docker:
           version: 20.10.7
@@ -49,14 +57,27 @@ jobs:
   #           heroku container:push web --app your-heroku-app-name
   #           heroku container:release web --app your-heroku-app-name
 
+
 workflows:
-  version: 2
-  build-and-deploy:
+  deployment_process:
     jobs:
-      - build:
+      - test
+      - build:      
+          requires:
+            - test
           filters:
             branches:
-              only: main
+              only:
+                - master
+
+# workflows:
+#   version: 2
+#   build-and-deploy:
+#     jobs:
+#       - build:
+#           filters:
+#             branches:
+#               only: main
       # - deploy_heroku:
       #     requires:
       #       - build
