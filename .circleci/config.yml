@@ -63,8 +63,8 @@ jobs:
             HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release --app oc-letting web
 
 workflows:
+  version: 2
   deployment_process:
-    public: true
     jobs:
       - pass_test
       - build_image:      
@@ -81,3 +81,4 @@ workflows:
             branches:
               only:
                 - master                
+    public: true
