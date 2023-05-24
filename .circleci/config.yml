@@ -1,7 +1,10 @@
 version: 2.1
 
+orbs:
+  heroku: circleci/heroku@2.0.0
+
 jobs:
-  test:
+  pass_test:
     docker:
       - image: cimg/python:3.8.16
 
@@ -19,10 +22,9 @@ jobs:
             pytest
             flake8
 
-  build:
+  build_image:
     docker:
       - image: cimg/python:3.8.16
-
     steps:
       - checkout
       - run:
@@ -38,51 +40,53 @@ jobs:
             TAG=$CIRCLE_SHA1 
             docker build -t rhunold/amd64_image_oc_letting:$TAG .
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-            docker push rhunold/amd64_image_oc_letting:$TAG            
+            docker push rhunold/amd64_image_oc_letting:$TAG
 
-  # deploy_heroku:
-  #   docker:
-  #     - image: cimg/python:3.8.16
+          # echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_USERNAME --password-stdin            
 
-  #   steps:
-  #     - checkout
+  deploy_heroku:
+    # machine: true  
+    executor: heroku/default
+    # docker:
+    #   - image: cimg/python:3.8.16
+    steps:
+      - checkout
+      - heroku/install
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true      
+      - run:
+          name: Deploy Docker image to Heroku
+          command: |
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:login
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:push --app oc-letting web
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release --app oc-letting web
 
-  #     - setup_remote_docker:
-  #         version: 20.10.7
-
-  #     - run:
-  #         name: Deploy to Heroku
-  #         command: |
-  #           echo "machine api.heroku.com login $HEROKU_EMAIL password $HEROKU_API_KEY" > ~/.netrc
-  #           chmod 600 ~/.netrc
-  #           heroku container:login
-  #           heroku container:push web --app your-heroku-app-name
-  #           heroku container:release web --app your-heroku-app-name
+      # - run:
+      #     name: Deploy to Heroku
+      #     command: |
+      #       echo "machine api.heroku.com login $HEROKU_EMAIL password $HEROKU_API_KEY" > ~/.netrc
+      #       chmod 600 ~/.netrc
+      #       heroku container:login
+      #       heroku container:push web --app oc-letting
+      #       heroku container:release web --app oc-letting
 
 
 workflows:
   deployment_process:
     jobs:
-      - test
-      - build:      
+      - pass_test
+      - build_image:      
           requires:
-            - test
+            - pass_test
           filters:
             branches:
               only:
                 - master
-
-# workflows:
-#   version: 2
-#   build-and-deploy:
-#     jobs:
-#       - build:
-#           filters:
-#             branches:
-#               only: master
-      # - deploy_heroku:
-      #     requires:
-      #       - build
-      #     filters:
-      #       branches:
-      #         only: master  
+      - deploy_heroku:      
+          requires:
+            - build_image
+          filters:
+            branches:
+              only:
+                - master                
