@@ -23,10 +23,14 @@ COPY requirements.txt /app/
 # RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# RUN python manage.py collectstatic --noinput
+COPY . /app/
 
-# COPY . /app/
-COPY . .
+RUN mkdir -p /app/staticfiles
+RUN chmod -R 755 /app/staticfiles
+RUN python manage.py collectstatic --noinput
+
+
+# COPY . .
 
 
 # Exposition du port du container
