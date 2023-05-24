@@ -27,8 +27,6 @@ COPY . /app/
 
 # RUN pytest
 
-
-
 # Exposition du port du container
 EXPOSE 8000
 
