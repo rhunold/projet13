@@ -9,7 +9,6 @@ load_dotenv()
 
 sentry_sdk.init(
     dsn=os.environ.get('SENTRY_KEY'),
-    
     integrations=[
         DjangoIntegration(),
     ],
