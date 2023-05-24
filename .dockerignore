@@ -2,10 +2,13 @@
 *.pyo
 *.pyd
 .Python
-
 .tox
 
 *DS_Store
-.git
 /specs
 /venv
+# .git
+
+# .env
+docker-compose.yml
+oc_site.sh
