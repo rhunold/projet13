@@ -62,18 +62,9 @@ jobs:
             HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:push --app oc-letting web
             HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release --app oc-letting web
 
-      # - run:
-      #     name: Deploy to Heroku
-      #     command: |
-      #       echo "machine api.heroku.com login $HEROKU_EMAIL password $HEROKU_API_KEY" > ~/.netrc
-      #       chmod 600 ~/.netrc
-      #       heroku container:login
-      #       heroku container:push web --app oc-letting
-      #       heroku container:release web --app oc-letting
-
-
 workflows:
   deployment_process:
+    public: true
     jobs:
       - pass_test
       - build_image:      
