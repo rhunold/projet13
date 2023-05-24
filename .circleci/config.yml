@@ -81,4 +81,7 @@ workflows:
             branches:
               only:
                 - master                
-    public: true
+
+circleci:
+  config:
+    default_config_visibility: public
