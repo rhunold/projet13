@@ -25,9 +25,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app/
 
-# RUN pytest
-
-
+RUN python manage.py collectstatic
 
 # Exposition du port du container
 EXPOSE 8000
