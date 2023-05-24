@@ -13,6 +13,8 @@ FROM cimg/python:3.8.16
 # ENV PYTHONDONTWRITEBYTECODE=1
 # ENV PYTHONUNBUFFERED=1
 
+ENV PORT=8000
+
 
 WORKDIR /app
 
@@ -30,4 +32,5 @@ COPY . /app/
 # Exposition du port du container
 EXPOSE 8000
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# CMD ["python", "manage.py", "runserver", "0.0.0.0:$PORT"]
+CMD python manage.py runserver 0.0.0.0:$PORT
