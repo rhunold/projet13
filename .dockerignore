@@ -1,14 +1,12 @@
 *.pyc
 *.pyo
 *.pyd
-.Python
-.tox
-
 *DS_Store
 /specs
 /venv
 # .git
-
-# .env
+.env
 docker-compose.yml
 oc_site.sh
+pytest.ini
+.vscode

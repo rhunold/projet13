@@ -104,7 +104,7 @@ Si on est sur une autre branche que le master, seul le jobs de test est lancé.
 
 Si c'est sur le master que l'on a pushé, Circle lance le job test. Si ce dernier est ok, il lance la génération de l'image et la push sur le [registry docker indiqué](https://hub.docker.com/repository/docker/rhunold/amd64_image_oc_letting/general) en y ajoutant un tag se basant sur la variable de hash CIRCLE_SHA1. Si le build est finalisé, c'est le job pour le deploiement sur Heroku qui est activé. Si le déploiement Heroku est réussi, l'application est déployé.
 
-Si l'un des jobs rencontre une erreur, tout s'arrête et les jobs suivant ne sont pas exécutés. 
+Si l'un des jobs rencontre une erreur, tout s'arrête et les jobs suivant ne sont pas exécutés.
 
 
 ### Configuration requise pour le déploiement

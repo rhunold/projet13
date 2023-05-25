@@ -6,9 +6,9 @@ def test_dummy():
     assert 1
 
 
-class TestOcLettingsIndexUrl(TestCase):
-    def test_oc_lettings_site_index(self):
-        url = reverse("index")
+class TestHomeUrl(TestCase):
+    def test_home_index(self):
+        url = reverse("home:index")
         response = self.client.get(url)
 
         assert response.status_code == 200
