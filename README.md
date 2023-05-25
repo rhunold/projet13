@@ -162,13 +162,14 @@ Il est a noté que CircleCI fourni un ensemble de variables spécifiques qui son
 
 #### Heroku
 - Se créer un compte [Heroku](https://www.heroku.com) et notez bien votre mot de passe.
-- Pour créer une app et/ou un pipeline, vous devez au préalable fournir vos informations de carte bancaire.
-- Dès lors, vous pourrez créer un pipeline (bouton "New" puis "Create new pipeline"). Choisissez un nom (oc-letting) pour votre pipeline puis cliquez sur "Create Pipeline"
-- Cliquez sur "Add app" sous "Production".
-- Donner un nom (oc-letting) et une région (Europe) à votre nouvelle app.
+- Pour créer une app , vous devez au préalable fournir vos informations de carte bancaire.
+- Dès lors, vous pourrez créer une app (bouton "New" puis "Create new app"). 
+- Choisissez un nom (oc-letting) pour votre app puis cliquez sur "Create app"
+- Une fois sur l'onglet "Deploy", choisissez "Container registery" dans la section Deployement method"
 - Installer [Heroku CLI(https://devcenter.heroku.com/articles/heroku-cli#install-the-heroku-cli) si ce n'est pas déjà fait.
+- Ensuite il va falloir indiquer les variables d'environnements. Cela peut être fait dans l'onglet "Settings", puis en cliquant sur le bouton "Reveal Config Vars" de la section "Configs Vars". Vous pouvez aussi le faire via Heroku CLI (voir ci dessous)
 
-
+#### Heroku CLI
 Loguez vous pour créer une SSH public key
 ```
 heroku login
@@ -215,5 +216,5 @@ heroku config --app oc-letting
 
 
 ### Déploiement répétable
-- A tout moment, vous pouvez décider de supprimer l'application Heroku. Il faudra alors recréer une application Heroku et ajouter les variables d'environnement comme indiqué préalablement.
-- Lorsque l'application Heroku a été recrée, vous pouvez allez dans CircleCI, allez dans la partie Dashboard, identifier le dernier pipeline avec les 3 jobs étant success et cliquer sur l'icone "Rerun workflow from start"
+- A tout moment, vous pouvez décider de supprimer l'application Heroku (onglet "Setting" de l'app, tout en bas). Il faudra alors recréer une application Heroku et ajouter les variables d'environnement comme indiqué préalablement.
+- Lorsque l'application Heroku a été recrée, vous pouvez allez la section Dashboard de CircleCI, identifier le dernier pipeline avec les 3 jobs étant success et cliquer sur l'icone "Rerun workflow from start"
