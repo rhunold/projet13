@@ -5,7 +5,7 @@
 /specs
 /venv
 # .git
-.env
+# .env
 docker-compose.yml
 oc_site.sh
 pytest.ini
